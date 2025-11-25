@@ -1,34 +1,43 @@
-🧠 Overview
+# 🧘‍♂️ Focus Meditation Agent
 
-The Focus Meditation Agent is an AI-powered meditation assistant built using:
+An AI-powered meditation assistant built using:
 
-Flask (Backend)
+* Flask (Backend)
+* HTML/CSS (Frontend – Blue/White theme)
+* Gemini Pro API (LLM responses)
+* JSON Memory System (Long-Term Memory)
+* LangGraph-style workflow (Reasoning pipeline)
 
-HTML/CSS (Frontend – Blue/White theme)
+---
 
-Gemini Pro API (LLM responses)
+## 🧠 Overview
 
-JSON Memory System (Long-Term Memory)
+The Focus Meditation Agent generates personalized guided meditation sessions based on:
 
-LangGraph-style workflow (Reasoning pipeline)
+* Mood
+* Duration
+* Long-term memory (JSON)
+* Past meditation summaries
 
-It guides users through personalized meditation sessions based on their mood, history, and duration.
+It uses a LangGraph-inspired flow:
+Memory → Reasoning → Save → Output
 
-⭐ Features
+---
 
-✔ Generates customized meditation sessions
+## ⭐ Features
 
-✔ Short-Term Memory (STM) per session
+✔ Personalized meditation sessions
+✔ Short-Term Memory per request
+✔ Long-Term Memory stored in `memory.json`
+✔ Stable (no ChromaDB issues)
+✔ Clean UI (blue/white)
+✔ Easy to extend
 
-✔ Long-Term Memory (LTM) stored in memory.json
+---
 
-✔ LangGraph-inspired flow (Memory → LLM → Save)
+## 📁 Project Structure
 
-✔ Lightweight, stable, dependency-free
-
-✔ No ChromaDB issues
-
-📁 Project Structure
+```
 focus_agent/
 │
 ├── frontend/
@@ -41,100 +50,136 @@ focus_agent/
     ├── memory.py
     ├── requirements.txt
     └── .env   <-- You create this
+```
 
-🧠 Memory System
-Short-Term Memory (STM)
+---
 
-Lives only during one agent request.
-Stored in runtime variables such as:
+## 🧠 Memory System
 
+### Short-Term Memory (STM)
+
+Lives only during one session.
+
+Holds:
+
+```
 mood
-
 duration
-
 prompt
+memory results
+agent response
+```
 
-mem_results
+---
 
-generated response
+### Long-Term Memory (LTM)
 
-Resets on each API call.
+Stored in:
 
-Long-Term Memory (LTM)
+```
+memory.json
+```
 
-Stored in memory.json.
+Example:
 
-Example entry:
-
+```json
 {
   "user_id": "abc123",
   "text": "Session summary...",
   "timestamp": 1700000000
 }
+```
 
+---
 
-Used to personalize future sessions.
+## 🚀 Setup Instructions
 
-🚀 Setup Instructions
-1. Create Virtual Environment
+### 1. Create Virtual Environment
+
+```bash
 python -m venv venv
+```
 
+Activate (Windows):
 
-Activate:
+```bash
+venv\Scripts\activate
+```
 
-venv\Scripts\activate     # Windows
+---
 
-2. Install Dependencies
+### 2. Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-3. Create .env File
+---
 
-Inside backend/ create:
+### 3. Create `.env` File
 
+Inside backend/:
+
+```
 GEMINI_API_KEY=YOUR_API_KEY_HERE
+```
 
-4. Run Backend
+---
+
+### 4. Run The Backend
+
+```bash
 python app.py
+```
 
+Backend:
 
-Backend available at:
-
+```
 http://127.0.0.1:5000/
+```
 
-🔌 API Endpoint
-POST /api/session
+---
 
-Body example:
+## 🔌 API Endpoint
 
+### POST /api/session
+
+#### Request:
+
+```json
 {
   "mood": "stressed",
   "duration": 5
 }
+```
 
+#### Response:
 
-Response example:
-
+```
 GUIDED_SESSION:
 Take a slow breath in…
+```
 
-🎨 Frontend
+---
 
-The frontend UI is a clean blue/white theme:
+## 🎨 Frontend
 
-Dropdown for mood
+Includes:
 
-Input for meditation duration
+* Mood selector
+* Duration input
+* Generate button
+* Response panel
 
-“Start Guided Session” button
+---
 
-Response panel
+## 📦 Requirements
 
-📦 Requirements
-
+```
 Python 3.10+
-
 Flask
-
 requests
-
 python-dotenv
+```
+
+---
