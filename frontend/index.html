@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Focus Meditation Agent</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Focus Meditation Agent</h1>
+      <p class="subtitle">Guided breathing & focused sessions — personalized by AI</p>
+    </header>
+
+    <main>
+      <section class="controls">
+        <label for="mood">How are you feeling?</label>
+        <select id="mood">
+          <option value="stressed">Stressed</option>
+          <option value="distracted">Distracted</option>
+          <option value="calm">Calm</option>
+          <option value="tired">Tired</option>
+        </select>
+
+        <label for="duration">Duration (mins)</label>
+        <input id="duration" type="number" min="1" max="30" value="5" />
+
+        <button id="startBtn">Start Guided Session</button>
+      </section>
+
+      <section class="output">
+        <h2>Agent Response</h2>
+        <pre id="agentOutput">Press "Start Guided Session" to begin.</pre>
+      </section>
+    </main>
+
+    <footer>
+      <small>Focus Meditation Agent</small>
+    </footer>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const agentOutput = document.getElementById('agentOutput');
+
+    startBtn.addEventListener('click', async () => {
+      const mood = document.getElementById('mood').value;
+      const duration = document.getElementById('duration').value;
+
+      agentOutput.textContent = 'Generating session...';
+
+      try {
+        const res = await fetch('/api/session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mood, duration })
+        });
+        const data = await res.json();
+        agentOutput.textContent = data.text || JSON.stringify(data, null, 2);
+      } catch (err) {
+        agentOutput.textContent = 'Error: ' + err.message;
+      }
+    });
+  </script>
+</body>
+</html>
